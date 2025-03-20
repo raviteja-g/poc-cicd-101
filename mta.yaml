@@ -1,52 +1,129 @@
 _schema-version: 3.3.0
 ID: poccicd101
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
+modules:
+- name: poccicd101-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: poccicd101-db
+  - name: poccicd101-auth
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: poccicd101-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: poccicd101-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: poccicd101-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: poccicd101-destination-service
+    parameters:
+      content-target: true
+  - name: poccicd101_html_repo_host
+    parameters:
+      service-key:
+        name: poccicd101_html_repo_host-key
+  - name: poccicd101-auth
+    parameters:
+      service-key:
+        name: poccicd101-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: poccicd101_poccicd101_html_repo_host
+          ServiceInstanceName: poccicd101-html5-app-host-service
+          ServiceKeyName: poccicd101_html_repo_host-key
+          sap.cloud.service: poccicd101
+        - Authentication: OAuth2UserTokenExchange
+          Name: poccicd101_poccicd101_auth
+          ServiceInstanceName: poccicd101-auth
+          ServiceKeyName: poccicd101-auth-key
+          sap.cloud.service: poccicd101
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: poccicd101-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: poccicd101_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - compoccicdpocicdui.zip
+      name: compoccicdpocicdui
+      target-path: resources/
+- name: compoccicdpocicdui
+  type: html5
+  path: app/pocicdui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: poccicd101-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: poccicd101-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: poccicd101-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: poccicd101-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: poccicd101-destination-service
+    service-plan: lite
+- name: poccicd101_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: poccicd101-html5-app-host-service
+    service-plan: app-host
 parameters:
+  deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
-modules:
-  - name: poccicd101-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      instances: 1
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: poccicd101-db
-      - name: poccicd101-auth
-
-  - name: poccicd101-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: poccicd101-db
-
-resources:
-  - name: poccicd101-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-  - name: poccicd101-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: poccicd101-${org}-${space}
-        tenant-mode: dedicated
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
