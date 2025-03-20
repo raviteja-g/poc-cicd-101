@@ -5,7 +5,7 @@ annotate service.User with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'name',
+                Label : 'Name',
                 Value : name,
             },
         ],
@@ -21,7 +21,7 @@ annotate service.User with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'name',
+            Label : 'Name',
             Value : name,
         },
     ],
