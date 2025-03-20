@@ -3,7 +3,7 @@ sap.ui.define(
     function (Component) {
         "use strict";
 
-        return Component.extend("com.poc.cicd.pocicdui.Component", {
+        return Component.extend("com.poc.cicd.poccicdui.Component", {
             metadata: {
                 manifest: "json"
             }

@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: com.poc.cicd.pocicdui
+  name: com.poc.cicd.poccicdui
 type: application
 server:
   customMiddleware:

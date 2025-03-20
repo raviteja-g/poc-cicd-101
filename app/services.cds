@@ -1,2 +1,2 @@
 
-using from './pocicdui/annotations';
+using from './poc-cicd-ui/annotations';

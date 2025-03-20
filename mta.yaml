@@ -66,12 +66,12 @@ modules:
     build-result: resources
     requires:
     - artifacts:
-      - compoccicdpocicdui.zip
-      name: compoccicdpocicdui
+      - compoccicdpoccicdui.zip
+      name: compoccicdpoccicdui
       target-path: resources/
-- name: compoccicdpocicdui
+- name: compoccicdpoccicdui
   type: html5
-  path: app/pocicdui
+  path: app/poc-cicd-ui
   build-parameters:
     build-result: dist
     builder: custom
@@ -107,11 +107,20 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: poccicd101-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: poccicd101-destination-service
     service-plan: lite
+  requires:
+  - name: srv-api
 - name: poccicd101_html_repo_host
   type: org.cloudfoundry.managed-service
   parameters:

@@ -1,15 +1,15 @@
 sap.ui.require(
     [
         'sap/fe/test/JourneyRunner',
-        'com/poc/cicd/pocicdui/test/integration/FirstJourney',
-		'com/poc/cicd/pocicdui/test/integration/pages/UserList',
-		'com/poc/cicd/pocicdui/test/integration/pages/UserObjectPage'
+        'com/poc/cicd/poccicdui/test/integration/FirstJourney',
+		'com/poc/cicd/poccicdui/test/integration/pages/UserList',
+		'com/poc/cicd/poccicdui/test/integration/pages/UserObjectPage'
     ],
     function(JourneyRunner, opaJourney, UserList, UserObjectPage) {
         'use strict';
         var JourneyRunner = new JourneyRunner({
             // start index.html in web folder
-            launchUrl: sap.ui.require.toUrl('com/poc/cicd/pocicdui') + '/index.html'
+            launchUrl: sap.ui.require.toUrl('com/poc/cicd/poccicdui') + '/index.html'
         });
 
        

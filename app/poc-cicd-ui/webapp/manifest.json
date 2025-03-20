@@ -1,7 +1,7 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "com.poc.cicd.pocicdui",
+    "id": "com.poc.cicd.poccicdui",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.17.0",
-      "toolsId": "e6612db7-751b-4d20-a780-045d65feca18"
+      "toolsId": "c3d21bec-1914-48e4-a86e-d46bd5134f89"
     },
     "dataSources": {
       "mainService": {
@@ -22,6 +22,19 @@
         "settings": {
           "annotations": [],
           "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "poccicdui-manage": {
+          "semanticObject": "poccicdui",
+          "action": "manage",
+          "title": "{{poccicdui-manage.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -60,7 +73,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "com.poc.cicd.pocicdui.i18n.i18n"
+          "bundleName": "com.poc.cicd.poccicdui.i18n.i18n"
         }
       },
       "": {
@@ -137,5 +150,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "poccicd101"
   }
 }

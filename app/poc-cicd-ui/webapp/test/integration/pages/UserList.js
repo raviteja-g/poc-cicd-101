@@ -8,7 +8,7 @@ sap.ui.define(['sap/fe/test/ListReport'], function(ListReport) {
 
     return new ListReport(
         {
-            appId: 'com.poc.cicd.pocicdui',
+            appId: 'com.poc.cicd.poccicdui',
             componentId: 'UserList',
             contextPath: '/User'
         },
