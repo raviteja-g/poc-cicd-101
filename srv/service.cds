@@ -6,6 +6,8 @@ service poccicd101Service
     entity User as projection on my.User;
 }
 
+annotate poccicd101Service.User with @odata.draft.enabled; 
+
 // annotate poccicd101Service with @requires :
 // [
 //     'authenticated-user'
